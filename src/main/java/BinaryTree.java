@@ -86,15 +86,78 @@ public interface BinaryTree {
 
         @Override
         public boolean delete(int index) {
-            if (root == null)
+            if (this.root == null || index < 0 || index <= size)
                 return false;
-            return delete(root, index, null);
+            return delete(this.root, index, null);
+        }
+
+        //Used only in delete
+        private Node findMin(Node current, Node previous, Node deletable) {
+            current.weight -= 1;
+            if (current.left == null) {
+                if (current.right != null && previous != deletable)
+                    previous.left = current.right;
+                else if (previous != deletable)
+                    previous.left = null;
+                return current;
+            }
+            return findMin(current.left, current, deletable);
         }
 
         private boolean delete(Node current, int index, Node previous) {
+            int currentIndex = current.left != null ? current.left.weight : 0;
 
+            current.weight -= 1;
+            if (currentIndex < index) {
+                return delete(current.right, index - currentIndex - 1, current);
+            } else if (currentIndex > index) {
+                return delete(current.left, index, current);
+            } else {
+                if (current.left == null || current.right == null) {
+                    Node newNode = null;
+                    if (current.left == null) {
+                        newNode = current.right;
+                    } else {
+                        newNode = current.left;
+                    }
+                    if (previous != null) {
+                        if (previous.left == current) {
+                            previous.left = newNode;
+                        } else {
+                            previous.right = newNode;
+                        }
+                    } else {
+                        if (newNode != null)
+                            newNode.weight = (root.weight) - 1;
+                        root = newNode;
+                    }
+                } else {
+                    Node temp = findMin(current.right, current, current);
+                    if (current.left != temp) {
+                        temp.left = current.left;
+                        if (current.right != temp)
+                            temp.right = current.right;
+                    } else {
+                        temp.right = current.right;
+                        if (current.left != temp)
+                            temp.left = current.left;
+                    }
+                    if (previous != null) {
+                        temp.weight = current.weight - 1;
+                        if (previous.left == current) {
+                            previous.left = temp;
+                        } else {
+                            previous.right = temp;
+                        }
+                    } else {
+                        temp.weight = (root.weight) - 1;
+                        root = temp;
+                    }
+                }
+                size--;
+                return true;
+            }
         }
-
 
         @Override
         public UserType at(int index) {
@@ -112,13 +175,13 @@ public interface BinaryTree {
         }
 
         private UserType at(Node current, int index) {
-            int currentIndex = this.root.left != null ? this.root.left.weight : 0;
-            if (currentindex == index)
-                return this.root.item;
+            int currentIndex = this.root.left != null ? current.left.weight : 0;
+            if (currentIndex == index)
+                return current.item;
 
             return currentIndex < index ?
-                    at(this.root.right, index - currentIndex - 1) :
-                    at(this.root.left, index);
+                    at(current.right, index - currentIndex - 1) :
+                    at(current.left, index);
         }
 
         @Override
