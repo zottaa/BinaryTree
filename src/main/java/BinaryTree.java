@@ -10,17 +10,29 @@ public interface BinaryTree {
     void balance();
 
     abstract class Abstract implements BinaryTree {
+        Abstract() {
+            this.root = null;
+            this.size = 0;
+        }
+
         public class Node {
             public Node left;
             public Node right;
             public UserType item;
             public int weight;
 
+            Node() {
+                this.item = null;
+                this.left = null;
+                this.right = null;
+                this.weight = 0;
+            }
+
             Node(UserType item) {
                 this.item = item;
                 this.left = null;
                 this.right = null;
-                int weight = 1;
+                this.weight = 1;
             }
 
             Node(UserType item, Node left, Node right) {
@@ -186,11 +198,55 @@ public interface BinaryTree {
 
         @Override
         public void balance() {
+            Node dummy = new Node();
+            dummy.right = this.root;
+            treeToVine(dummy);
+            vineToTree(dummy, size);
+            this.root = dummy.right;
+        }
 
+        private void treeToVine(Node root) {
+            Node tail = root;
+            Node rest = tail.right;
+            while (rest != null) {
+                if (rest.left == null) {
+                    tail = rest;
+                    rest = rest.right;
+                } else {
+                    Node temp = rest.left;
+                    rest.left = temp.right;
+                    temp.right = rest;
+                    rest = temp;
+                    tail.right = temp;
+                }
+            }
+        }
+
+        private void vineToTree(Node root, int size) {
+            int leaves = (int) (size + 1 - Math.pow(2, Math.log(size + 1) / Math.log(2)));
+            compress(root, leaves);
+            size = size - leaves;
+            while (size > 1) {
+                compress(root, (int) size / 2);
+                size = (int) size / 2;
+            }
+        }
+
+        private void compress(Node root, int count) {
+            Node scanner = root;
+            for (int i = 0; i < count; i++) {
+                Node child = scanner.right;
+                scanner.right = child.right;
+                scanner = scanner.right;
+                child.right = scanner.left;
+                scanner.left = child;
+            }
         }
     }
 
     class Base extends Abstract {
-
+        public Base() {
+            super();
+        }
     }
 }
