@@ -1,18 +1,26 @@
 import java.security.InvalidAlgorithmParameterException;
+import java.util.Comparator;
 
 public interface BinaryTree {
-    boolean add(UserType item);
+    public boolean add(UserType item);
 
-    boolean delete(int index);
+    public boolean delete(int index);
 
-    UserType at(int index);
+    public UserType at(int index);
 
-    void balance();
+    public void balance();
 
     abstract class Abstract implements BinaryTree {
         Abstract() {
             this.root = null;
             this.size = 0;
+            this.comparator = null;
+        }
+
+        Abstract(Node root) {
+            this.root = root;
+            this.size = 1;
+            this.comparator = root.item.getTypeComparator();
         }
 
         public class Node {
@@ -46,9 +54,12 @@ public interface BinaryTree {
         private Node root;
         private int size;
 
+        private Comparator<Object> comparator;
+
         @Override
         public boolean add(UserType item) {
             if (root == null) {
+                this.comparator = item.getTypeComparator();
                 this.root = new Node(item);
                 this.size++;
                 return true;
@@ -63,7 +74,7 @@ public interface BinaryTree {
             }
             current.weight += 1;
 
-            if (current.item > item) {
+            if (comparator.compare(current.item, item) > 0) {
                 if (current.left == null) {
                     current.left = new Node(item);
                     size++;
@@ -89,7 +100,7 @@ public interface BinaryTree {
 
             current.weight -= 1;
 
-            if (current.item > item) {
+            if (comparator.compare(current.item, item) > 0) {
                 restoreWeights(current.left, item);
             } else {
                 restoreWeights(current.right, item);
@@ -98,7 +109,7 @@ public interface BinaryTree {
 
         @Override
         public boolean delete(int index) {
-            if (this.root == null || index < 0 || index <= size)
+            if (this.root == null || index < 0 || index >= size)
                 return false;
             return delete(this.root, index, null);
         }
@@ -173,8 +184,8 @@ public interface BinaryTree {
 
         @Override
         public UserType at(int index) {
-            if (index < 0 || index <= size) {
-                throw new IndexOutOfBoundsException();
+            if (index < 0 || index >= size || root == null) {
+                return null;
             }
 
             int currentIndex = this.root.left != null ? this.root.left.weight : 0;

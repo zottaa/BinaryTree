@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class UserFactory {
-    public ArrayList<String> getTypeNameList {
+    public ArrayList<String> getTypeNameList() {
 
     }
 
