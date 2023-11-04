@@ -10,6 +10,12 @@ public interface BinaryTree {
 
     public void balance();
 
+    public void forEach(ElementProcessor<UserType> processor);
+
+    public void forEachFromRoot(ElementProcessor<UserType> processor);
+
+    public void verticalShow();
+
     abstract class Abstract implements BinaryTree {
         Abstract() {
             this.root = null;
@@ -216,6 +222,22 @@ public interface BinaryTree {
             this.root = dummy.right;
         }
 
+        public void verticalShow() {
+            verticalShowHelper(this.root, 1);
+        }
+
+        private void verticalShowHelper(Node current, int level) { //Метод помошник для вертикального показа дерева
+            if (current == null)
+                return;
+            verticalShowHelper(current.right, level + 1);
+            for (int i = 0; i != level * 3; ++i) {
+                System.out.print(" ");
+            }
+            System.out.println(current.item.toString());;
+            verticalShowHelper(current.left, level + 1);
+        }
+
+
         private void treeToVine(Node root) {
             Node tail = root;
             Node rest = tail.right;
@@ -251,6 +273,30 @@ public interface BinaryTree {
                 scanner = scanner.right;
                 child.right = scanner.left;
                 scanner.left = child;
+            }
+        }
+
+        public void forEach(ElementProcessor<UserType> processor) {
+            inOrderTraversal(root, processor);
+        }
+
+        private void inOrderTraversal(Node node, ElementProcessor<UserType> processor) {
+            if (node != null) {
+                inOrderTraversal(node.left, processor);
+                processor.toDo(node.item);
+                inOrderTraversal(node.right, processor);
+            }
+        }
+
+        public void forEachFromRoot(ElementProcessor<UserType> processor) {
+            fromRootOrder(this.root, processor);
+        }
+
+        private void fromRootOrder(Node node, ElementProcessor<UserType> processor) {
+            if (node != null) {
+                processor.toDo(node.item);
+                fromRootOrder(node.left, processor);
+                fromRootOrder(node.right, processor);
             }
         }
     }

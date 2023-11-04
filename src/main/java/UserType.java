@@ -102,23 +102,31 @@ class Point implements UserType {
             return null;
         }
     }
+
+    @Override
+    public String toString() {
+        return  Integer.toString(x) + "," + Integer.toString(y);
+    }
 }
 class Fraction implements UserType {
 
     private final int numerator;
     private final int denominator;
     private final int intPart;
+    private final boolean isNegative;
 
     Fraction() {
         this.intPart = 0;
         this.denominator = 1;
         this.numerator = 0;
+        this.isNegative = false;
     }
 
     Fraction(int intPart, int numerator, int denominator) {
         if (denominator == 0) {
             throw new ArithmeticException("Denominator cannot be zero");
         }
+        this.isNegative = (intPart * numerator * denominator) < 0;
         this.intPart = intPart;
         this.numerator = numerator;
         this.denominator = denominator;
@@ -128,6 +136,7 @@ class Fraction implements UserType {
         if (denominator == 0) {
             throw new ArithmeticException("Denominator cannot be zero");
         }
+        this.isNegative = (numerator * denominator) < 0;
         if (numerator < denominator) {
             this.numerator = numerator;
             this.denominator = denominator;
@@ -165,7 +174,7 @@ class Fraction implements UserType {
 
     @Override
     public Object parseValue(String string) {
-        String[] parts = string.split(",");
+        String[] parts = string.split("/");
         try {
             if (parts.length == 2) {
 
@@ -196,6 +205,13 @@ class Fraction implements UserType {
                     Fraction f1 = (Fraction)o1;
                     Fraction f2 = (Fraction)o2;
 
+                    if (f1.isNegative != f2.isNegative) {
+                        if (f2.isNegative) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
                     if (f1.intPart != f2.intPart) {
                         return Integer.compare(f1.intPart, f2.intPart);
                     } else {
@@ -214,6 +230,15 @@ class Fraction implements UserType {
             return super.clone();
         } catch (CloneNotSupportedException e) {
             return null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (this.intPart != 0) {
+            return Integer.toString(this.intPart * this.denominator + this.numerator) + "/" + Integer.toString(this.denominator);
+        } else {
+            return Integer.toString(this.numerator) + "/" + Integer.toString(this.denominator);
         }
     }
 }
