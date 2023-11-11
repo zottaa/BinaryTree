@@ -8,13 +8,15 @@ public interface BinaryTree {
 
     public UserType at(int index);
 
+    public boolean isEmpty();
+
     public void balance();
 
     public void forEach(ElementProcessor<UserType> processor);
 
     public void forEachFromRoot(ElementProcessor<UserType> processor);
 
-    public void verticalShow();
+    public void clear();
 
     abstract class Abstract implements BinaryTree {
         Abstract() {
@@ -73,14 +75,28 @@ public interface BinaryTree {
             return add(root, item);
         }
 
+        @Override
+        public void clear() {
+            while (size != 0) {
+                this.delete(0);
+            }
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return size == 0;
+        }
+
         private boolean add(Node current, UserType item) {
-            if (current.item == item) {
+            int comparisonResult = comparator.compare(current.item, item);
+
+            if (comparisonResult == 0) {
                 restoreWeights(root, item);
                 return false;
             }
             current.weight += 1;
 
-            if (comparator.compare(current.item, item) > 0) {
+            if (comparisonResult > 0) {
                 if (current.left == null) {
                     current.left = new Node(item);
                     size++;
@@ -198,13 +214,14 @@ public interface BinaryTree {
             if (currentIndex == index)
                 return this.root.item;
 
+
             return currentIndex < index ?
                     at(this.root.right, index - currentIndex - 1) :
                     at(this.root.left, index);
         }
 
         private UserType at(Node current, int index) {
-            int currentIndex = this.root.left != null ? current.left.weight : 0;
+            int currentIndex = current.left != null ? current.left.weight : 0;
             if (currentIndex == index)
                 return current.item;
 
@@ -220,23 +237,8 @@ public interface BinaryTree {
             treeToVine(dummy);
             vineToTree(dummy, size);
             this.root = dummy.right;
+            recalculateWeights();
         }
-
-        public void verticalShow() {
-            verticalShowHelper(this.root, 1);
-        }
-
-        private void verticalShowHelper(Node current, int level) { //Метод помошник для вертикального показа дерева
-            if (current == null)
-                return;
-            verticalShowHelper(current.right, level + 1);
-            for (int i = 0; i != level * 3; ++i) {
-                System.out.print(" ");
-            }
-            System.out.println(current.item.toString());;
-            verticalShowHelper(current.left, level + 1);
-        }
-
 
         private void treeToVine(Node root) {
             Node tail = root;
@@ -276,6 +278,23 @@ public interface BinaryTree {
             }
         }
 
+        private void recalculateWeights() {
+            recalculateWeights(root);
+        }
+
+        private int recalculateWeights(Node node) {
+            if (node == null) {
+                return 0;
+            }
+
+            int leftWeight = recalculateWeights(node.left);
+            int rightWeight = recalculateWeights(node.right);
+
+            node.weight = leftWeight + rightWeight + 1;
+
+            return node.weight;
+        }
+
         public void forEach(ElementProcessor<UserType> processor) {
             inOrderTraversal(root, processor);
         }
@@ -297,6 +316,24 @@ public interface BinaryTree {
                 processor.toDo(node.item);
                 fromRootOrder(node.left, processor);
                 fromRootOrder(node.right, processor);
+            }
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder treeString = new StringBuilder();
+            buildTreeString(root, 0, treeString);
+            return treeString.toString();
+        }
+
+        private void buildTreeString(Node node, int level, StringBuilder treeString) {
+            if (node != null) {
+                buildTreeString(node.right, level + 1, treeString);
+                for (int i = 0; i < level; i++) {
+                    treeString.append("         ");
+                }
+                treeString.append(node.item).append("\n");
+                buildTreeString(node.left, level + 1, treeString);
             }
         }
     }

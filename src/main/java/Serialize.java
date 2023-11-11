@@ -1,3 +1,5 @@
+import javafx.scene.control.ComboBox;
+
 import java.io.*;
 
 public interface Serialize {

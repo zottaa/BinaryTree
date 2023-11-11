@@ -56,7 +56,7 @@ class Point implements UserType {
     }
 
     @Override
-    public Object parseValue(String string) {
+    public UserType parseValue(String string) {
 
         String[] parts = string.split(",");
 
@@ -173,7 +173,7 @@ class Fraction implements UserType {
     }
 
     @Override
-    public Object parseValue(String string) {
+    public UserType parseValue(String string) {
         String[] parts = string.split("/");
         try {
             if (parts.length == 2) {

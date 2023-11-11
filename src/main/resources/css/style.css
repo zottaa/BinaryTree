@@ -1,0 +1,22 @@
+.button {
+    -fx-min-width: 80px;
+    -fx-min-height: 30px;
+    -fx-background-radius: 7;
+}
+
+.text-field {
+    -fx-pref-width: 150px;
+    -fx-pref-height: 30px;
+    -fx-background-radius:5;
+}
+
+.combo-box {
+    -fx-min-width: 80px;
+    -fx-min-height: 30px;
+    -fx-background-radius: 7;
+}
+
+.text-area {
+    -fx-font-size: 24px;
+}
+
