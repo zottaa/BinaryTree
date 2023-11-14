@@ -20,7 +20,7 @@ interface BinaryTree {
 
     fun clear()
 
-    abstract class Abstract(private var root: Node? = null, private var size: Int = 0, private var comparator: Comparator<Any>? = null) :
+    abstract class Abstract(private var root: Node? = null, private var _size: Int = 0, private var comparator: Comparator<Any>? = null) :
         BinaryTree {
         inner class Node(val item: UserType? = null, var left: Node? = null, var right: Node? = null, var weight: Int = 0) {
             init {
@@ -28,11 +28,15 @@ interface BinaryTree {
             }
         }
 
+        var size: Int = _size
+            get() = _size
+            private set
+
         override fun add(item: UserType): Boolean {
             if (root == null) {
                 comparator = item.getTypeComparator()
                 root = Node(item)
-                size++
+                _size++
                 return true
             }
             return add(root!!, item)
@@ -48,7 +52,7 @@ interface BinaryTree {
             return if (comparisonResult > 0) {
                 if (current.left == null) {
                     current.left = Node(item)
-                    size++
+                    _size++
                     true
                 } else {
                     add(current.left!!, item)
@@ -56,7 +60,7 @@ interface BinaryTree {
             } else {
                 if (current.right == null) {
                     current.right = Node(item)
-                    size++
+                    _size++
                     true
                 } else {
                     add(current.right!!, item)
@@ -77,7 +81,7 @@ interface BinaryTree {
         }
 
         override fun delete(index: Int): Boolean {
-            return if (this.root == null || index < 0 || index >= size) false else delete(root, index, null)
+            return if (this.root == null || index < 0 || index >= _size) false else delete(root, index, null)
         }
 
         private fun delete(
@@ -129,7 +133,7 @@ interface BinaryTree {
                         root = temp
                     }
                 }
-                size--
+                _size--
                 true
             }
         }
@@ -149,7 +153,7 @@ interface BinaryTree {
         }
 
         override fun at(index: Int): UserType? {
-            if (index < 0 || index >= size || root == null) {
+            if (index < 0 || index >= _size || root == null) {
                 return null
             }
 
@@ -179,14 +183,14 @@ interface BinaryTree {
         }
 
         override fun isEmpty(): Boolean {
-            return size == 0
+            return _size == 0
         }
 
         override fun balance() {
             val dummy: Node = Node()
             dummy.right = this.root
             treeToVine(dummy)
-            vineToTree(dummy, size)
+            vineToTree(dummy, _size)
             this.root = dummy.right
             recalculateWeights()
         }
@@ -277,7 +281,7 @@ interface BinaryTree {
         }
 
         override fun clear() {
-            while (size != 0) {
+            while (_size != 0) {
                 delete(0)
             }
         }

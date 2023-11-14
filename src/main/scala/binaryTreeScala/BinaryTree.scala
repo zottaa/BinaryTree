@@ -12,6 +12,9 @@ trait BinaryTree {
   def forEach(processor: ElementProcessor[UserType]): Unit
   def forEachFromRoot(processor: ElementProcessor[UserType]): Unit
   def clear(): Unit
+
+  def getSize(): Int
+
   def addFunctional(item: UserType): BinaryTree
 }
 
@@ -56,6 +59,8 @@ object BinaryTree {
         delete(0)
       }
     }
+
+    override def getSize(): Int = size
 
     override def isEmpty: Boolean = size == 0
 

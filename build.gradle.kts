@@ -13,11 +13,12 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.scala-lang:scala-library:2.13.12")
     implementation("org.scala-lang:scala-reflect:2.13.12")
+    testImplementation("junit:junit:4.13.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
+    testImplementation("org.junit.vintage:junit-vintage-engine:5.7.2")
 }
 
 sourceSets {
@@ -33,6 +34,11 @@ sourceSets {
         }
         resources {
             srcDirs("src/main/resources")
+        }
+    }
+    test {
+        kotlin {
+            srcDirs("src/test/kotlin")
         }
     }
 }

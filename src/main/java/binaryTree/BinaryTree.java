@@ -11,6 +11,8 @@ public interface BinaryTree {
 
     public boolean isEmpty();
 
+    public int size();
+
     public void balance();
 
     public void forEach(ElementProcessor<UserType> processor);
@@ -64,6 +66,11 @@ public interface BinaryTree {
         private int size;
 
         private Comparator<Object> comparator;
+
+        @Override
+        public int size() {
+            return this.size;
+        }
 
         @Override
         public boolean add(UserType item) {

@@ -36,6 +36,7 @@ class BinaryTreeGUI extends Application {
 
     val items: ArrayBuffer[String] = userFactory.getTypeNameList.asScala.to(ArrayBuffer)
 
+
     addValueField = new TextField
     deleteValueField = new TextField
     deleteValueField.setPromptText("Enter index")

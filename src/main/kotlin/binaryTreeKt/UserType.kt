@@ -67,7 +67,7 @@ class Point(private val x: Int = 0, private val y: Int = 0) : UserType {
     override fun toString(): String = "$x,$y"
 }
 
-class Fraction (
+class Fraction(
     val numerator: Int = 0,
     val denominator: Int = 1,
     val intPart: Int = 0,
@@ -160,4 +160,56 @@ class Fraction (
             "$numerator/$denominator"
         }
     }
+}
+
+class TestInteger(private val value: Int = 0) : UserType, Cloneable {
+    override fun typeName(): String {
+        return "Integer"
+    }
+
+    override fun create(): Any {
+        return TestInteger(0)
+    }
+
+    override fun readValue(`in`: InputStreamReader): Any {
+        try {
+            val reader = BufferedReader(`in`)
+            val line = reader.readLine()
+            return parseValue(line) ?: TestInteger()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return TestInteger()
+    }
+
+    override fun parseValue(string: String): UserType? {
+        try {
+                return TestInteger(string.toInt())
+        } catch (e: NumberFormatException) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    override fun getTypeComparator(): Comparator<Any> {
+        return Comparator { o1, o2 ->
+            if (o1 is TestInteger && o2 is TestInteger) {
+                val x1 = o1
+                val x2 = o2
+                return@Comparator Integer.compare(x1.value, x2.value)
+            } else {
+                return@Comparator 0
+            }
+        }
+    }
+
+    override fun clone(): Any {
+        return super<Cloneable>.clone()
+    }
+
+    override fun toString(): String {
+        return "$value"
+    }
+
+
 }
