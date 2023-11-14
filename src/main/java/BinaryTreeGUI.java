@@ -13,7 +13,6 @@ public class BinaryTreeGUI extends Application {
 
     private BinaryTree binaryTree = new BinaryTree.Base();
     private final UserFactory userFactory = new UserFactory();
-
     private UserType builder;
     private BinaryTreeController controller;
 

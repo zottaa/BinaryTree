@@ -1,4 +1,3 @@
-import java.security.InvalidAlgorithmParameterException;
 import java.util.Comparator;
 
 public interface BinaryTree {
@@ -295,6 +294,7 @@ public interface BinaryTree {
             return node.weight;
         }
 
+        @Override
         public void forEach(ElementProcessor<UserType> processor) {
             inOrderTraversal(root, processor);
         }
@@ -307,6 +307,7 @@ public interface BinaryTree {
             }
         }
 
+        @Override
         public void forEachFromRoot(ElementProcessor<UserType> processor) {
             fromRootOrder(this.root, processor);
         }
