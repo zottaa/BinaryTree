@@ -1,17 +1,19 @@
+package binaryTreeKt
+
 import java.io.*
 
-interface SerializeKt {
-    fun serialize(tree: BinaryTreeKt?, filename: String?, type: String?)
+interface Serialize {
+    fun serialize(tree: BinaryTree?, filename: String?, type: String?)
 
-    fun deserialize(filename: String?): BinaryTreeKt?
+    fun deserialize(filename: String?): BinaryTree?
 
-    abstract class Abstract : SerializeKt {
-        override fun serialize(tree: BinaryTreeKt?, filename: String?, type: String?) {
+    abstract class Abstract : Serialize {
+        override fun serialize(tree: BinaryTree?, filename: String?, type: String?) {
             try {
                 PrintWriter(filename).use { writer ->
                     writer.println(type)
-                    tree!!.forEachFromRoot(object : ElementProcessorKt<UserTypeKt> {
-                        override fun toDo(v: UserTypeKt) {
+                    tree!!.forEachFromRoot(object : ElementProcessor<UserType> {
+                        override fun toDo(v: UserType) {
                             writer.print(" ")
                             writer.print(v)
                         }
@@ -22,21 +24,21 @@ interface SerializeKt {
             }
         }
 
-        override fun deserialize(filename: String?): BinaryTreeKt? {
+        override fun deserialize(filename: String?): BinaryTree? {
             try {
                 BufferedReader(FileReader(filename)).use { bufferedReader ->
                     val type = bufferedReader.readLine() ?: throw IOException("Empty file")
-                    val userFactoryKt = UserFactoryKt()
-                    require(userFactoryKt.getTypeNameList().contains(type)) { "Wrong type" }
+                    val userFactory = UserFactory()
+                    require(userFactory.getTypeNameList().contains(type)) { "Wrong type" }
                     var line: String?
-                    val tree: BinaryTreeKt = BinaryTreeKt.Base()
+                    val tree: BinaryTree = BinaryTree.Base()
                     while (bufferedReader.readLine().also { line = it } != null) {
                         val items = line!!.split(" ")
                         for (item in items) {
-                            val builder = userFactoryKt.getBuilderByName(type)
+                            val builder = userFactory.getBuilderByName(type)
                             val obj = builder!!.parseValue(item)
                             if (obj != null) {
-                                tree.add(obj as UserTypeKt)
+                                tree.add(obj as UserType)
                             }
                         }
                     }

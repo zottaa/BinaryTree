@@ -1,3 +1,5 @@
+package binaryTree;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -139,8 +141,7 @@ public class BinaryTreeGUI extends Application {
         borderPane.setBottom(mainBox);
 
         Scene scene = new Scene(borderPane, 900, 900);
-        scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
-
+        scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
 

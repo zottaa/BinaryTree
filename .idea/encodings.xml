@@ -5,13 +5,19 @@
     <file url="file://$PROJECT_DIR$/java/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/java/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/java/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/java_module/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/java_module/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/kotlin/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/kotlin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/kotlin_module/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/kotlin_module/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java_test/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java_test/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/kotlin/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/kotlin/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/scala/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/scala/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/scala_package/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/scala_package/src/main/resources" charset="UTF-8" />
   </component>
 </project>

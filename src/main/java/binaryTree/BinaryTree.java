@@ -1,3 +1,5 @@
+package binaryTree;
+
 import java.util.Comparator;
 
 public interface BinaryTree {
@@ -115,7 +117,7 @@ public interface BinaryTree {
         }
 
         private void restoreWeights(Node current, UserType item) {
-            if (current == null || current.item == item) {
+            if (current == null || comparator.compare(current.item,item) == 0) {
                 return;
             }
 

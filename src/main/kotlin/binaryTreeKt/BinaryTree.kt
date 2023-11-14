@@ -1,32 +1,34 @@
+package binaryTreeKt
+
 import kotlin.math.ln
 import kotlin.math.pow
 
-interface BinaryTreeKt {
-    fun add(item: UserTypeKt): Boolean
+interface BinaryTree {
+    fun add(item: UserType): Boolean
 
     fun delete(index: Int): Boolean
 
-    fun at(index: Int): UserTypeKt?
+    fun at(index: Int): UserType?
 
     fun isEmpty(): Boolean
 
     fun balance()
 
-    fun forEach(processor: ElementProcessorKt<UserTypeKt>)
+    fun forEach(processor: ElementProcessor<UserType>)
 
-    fun forEachFromRoot(processor: ElementProcessorKt<UserTypeKt>)
+    fun forEachFromRoot(processor: ElementProcessor<UserType>)
 
     fun clear()
 
     abstract class Abstract(private var root: Node? = null, private var size: Int = 0, private var comparator: Comparator<Any>? = null) :
-        BinaryTreeKt {
-        inner class Node(val item: UserTypeKt? = null, var left: Node? = null, var right: Node? = null, var weight: Int = 0) {
+        BinaryTree {
+        inner class Node(val item: UserType? = null, var left: Node? = null, var right: Node? = null, var weight: Int = 0) {
             init {
                 weight = (item?.let { 1 } ?: 0) + (left?.weight ?: 0) + (right?.weight ?: 0)
             }
         }
 
-        override fun add(item: UserTypeKt): Boolean {
+        override fun add(item: UserType): Boolean {
             if (root == null) {
                 comparator = item.getTypeComparator()
                 root = Node(item)
@@ -36,7 +38,7 @@ interface BinaryTreeKt {
             return add(root!!, item)
         }
 
-        private fun add(current: Node, item: UserTypeKt): Boolean {
+        private fun add(current: Node, item: UserType): Boolean {
             val comparisonResult = comparator!!.compare(current.item, item)
             if (comparisonResult == 0) {
                 restoreWeights(root, item)
@@ -62,8 +64,8 @@ interface BinaryTreeKt {
             }
         }
 
-        private fun restoreWeights(current: Node?, item: UserTypeKt) {
-            if (current == null || current.item === item) {
+        private fun restoreWeights(current: Node?, item: UserType) {
+            if (current == null || comparator!!.compare(current.item, item) == 0) {
                 return
             }
             current.weight -= 1
@@ -146,7 +148,7 @@ interface BinaryTreeKt {
             return findMin(current.left!!, current, deletable)
         }
 
-        override fun at(index: Int): UserTypeKt? {
+        override fun at(index: Int): UserType? {
             if (index < 0 || index >= size || root == null) {
                 return null
             }
@@ -161,7 +163,7 @@ interface BinaryTreeKt {
             ) else at(root!!.left!!, index)
         }
 
-        private fun at(current: Node, index: Int): UserTypeKt? {
+        private fun at(current: Node, index: Int): UserType? {
             val currentIndex = if (current.left != null) current.left!!.weight else 0
             if (currentIndex == index) return current.item
             return if (currentIndex < index) current.right?.let {
@@ -250,11 +252,11 @@ interface BinaryTreeKt {
             return node.weight
         }
 
-        override fun forEach(processor: ElementProcessorKt<UserTypeKt>) {
+        override fun forEach(processor: ElementProcessor<UserType>) {
             inOrderTraversal(root, processor)
         }
 
-        private fun inOrderTraversal(node: Node?, processor: ElementProcessorKt<UserTypeKt>) {
+        private fun inOrderTraversal(node: Node?, processor: ElementProcessor<UserType>) {
             if (node != null) {
                 inOrderTraversal(node.left, processor)
                 node.item?.let { processor.toDo(it) }
@@ -262,11 +264,11 @@ interface BinaryTreeKt {
             }
         }
 
-        override fun forEachFromRoot(processor: ElementProcessorKt<UserTypeKt>) {
+        override fun forEachFromRoot(processor: ElementProcessor<UserType>) {
             fromRootOrder(root, processor)
         }
 
-        private fun fromRootOrder(node: Node?, processor: ElementProcessorKt<UserTypeKt>) {
+        private fun fromRootOrder(node: Node?, processor: ElementProcessor<UserType>) {
             if (node != null) {
                 node.item?.let { processor.toDo(it) }
                 fromRootOrder(node.left, processor)

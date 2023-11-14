@@ -1,3 +1,5 @@
+package binaryTreeKt
+
 import javafx.application.Application
 import javafx.geometry.Pos
 import javafx.scene.Scene
@@ -7,11 +9,11 @@ import javafx.stage.FileChooser
 import javafx.stage.Stage
 import java.io.File
 
-class BinaryTreeGUIKt : Application() {
+class BinaryTreeGUI : Application() {
 
-    private var binaryTree: BinaryTreeKt = BinaryTreeKt.Base()
-    private val userFactory = UserFactoryKt()
-    private var builder: UserTypeKt? = null
+    private var binaryTree: BinaryTree = BinaryTree.Base()
+    private val userFactory = UserFactory()
+    private var builder: UserType? = null
     private lateinit var controller: BinaryTreeController
 
     private lateinit var addValueField: TextField
@@ -23,7 +25,7 @@ class BinaryTreeGUIKt : Application() {
     private lateinit var operationComboBox: ComboBox<String>
 
     override fun start(primaryStage: Stage) {
-        primaryStage.title = "Binary Tree GUI"
+        primaryStage.title = "Binary Tree GUI Kotlin"
 
         controller = BinaryTreeController(binaryTree) { updateOutput() }
 
@@ -128,7 +130,7 @@ class BinaryTreeGUIKt : Application() {
         borderPane.bottom = mainBox
 
         val scene = Scene(borderPane, 900.0, 900.0)
-        scene.stylesheets.add(javaClass.getResource("css/style.css").toExternalForm())
+        scene.stylesheets.add(javaClass.getResource("/css/style.css").toExternalForm())
 
         primaryStage.scene = scene
         primaryStage.show()
@@ -141,15 +143,15 @@ class BinaryTreeGUIKt : Application() {
     }
 
     private class BinaryTreeController(
-        var binaryTree: BinaryTreeKt,
+        var binaryTree: BinaryTree,
         private val updateOutputCallback: Runnable
     ) {
-        private val serialize: SerializeKt = SerializeKt.Base()
+        private val serialize: Serialize = Serialize.Base()
 
-        fun onAddButtonClicked(builder: UserTypeKt?, input: String) {
+        fun onAddButtonClicked(builder: UserType?, input: String) {
             if (!input.isEmpty()) {
                 try {
-                    val value = builder?.parseValue(input) as UserTypeKt?
+                    val value = builder?.parseValue(input) as UserType?
                     if (value != null) {
                         binaryTree.add(value)
                         updateOutputCallback.run()
@@ -203,8 +205,8 @@ class BinaryTreeGUIKt : Application() {
 
         fun onTraverseOrderButtonClicked(outputArea: TextArea) {
             val stringBuilder = StringBuilder()
-            binaryTree.forEach(object : ElementProcessorKt<UserTypeKt> {
-                override fun toDo(v: UserTypeKt) {
+            binaryTree.forEach(object : ElementProcessor<UserType> {
+                override fun toDo(v: UserType) {
                     stringBuilder.append(v.toString())
                     stringBuilder.append(" ")
                 }
@@ -217,7 +219,7 @@ class BinaryTreeGUIKt : Application() {
             updateOutputCallback.run()
         }
 
-        fun onSerializeButtonClicked(builder: UserTypeKt?) {
+        fun onSerializeButtonClicked(builder: UserType?) {
             val fileChooser = FileChooser()
             fileChooser.title = "Select File"
             val extFilter = FileChooser.ExtensionFilter("Text Files", "*.txt")
@@ -255,7 +257,7 @@ class BinaryTreeGUIKt : Application() {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            launch(BinaryTreeGUIKt::class.java, *args)
+            launch(BinaryTreeGUI::class.java, *args)
         }
     }
 }

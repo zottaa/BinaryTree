@@ -1,3 +1,5 @@
+package binaryTree;
+
 import java.io.*;
 
 public interface Serialize {

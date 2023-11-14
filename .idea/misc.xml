@@ -10,12 +10,17 @@
         <option value="$PROJECT_DIR$/java/pom.xml" />
         <option value="$PROJECT_DIR$/src/java/pom.xml" />
         <option value="$PROJECT_DIR$/src/kotlin/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java_test/pom.xml" />
+        <option value="$PROJECT_DIR$/src/java_module/pom.xml" />
+        <option value="$PROJECT_DIR$/src/kotlin_module/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/java/pom.xml" />
         <option value="$PROJECT_DIR$/src/kotlin/pom.xml" />
+        <option value="$PROJECT_DIR$/src/kotlin_module/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java_test/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/scala/pom.xml" />
       </set>
     </option>
