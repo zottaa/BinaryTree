@@ -25,7 +25,7 @@ object BinaryTree {
   }
 
   abstract class Abstract extends BinaryTree {
-    var root: Node = _
+    protected var root: Node = _
     var size: Int = _
     var comparator: Comparator[Object] = _
 

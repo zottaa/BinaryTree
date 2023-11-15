@@ -2,10 +2,6 @@ package binaryTreeKt
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-
-class BinaryTreeForTest : BinaryTree.Abstract() {
-
-}
 class BinaryTreeTest {
     @Test
     fun addTest() {
@@ -283,5 +279,37 @@ class BinaryTreeTest {
         val binaryTree = BinaryTree.Base()
         val userFactory = UserFactory()
         val builder = userFactory.getBuilderByName("Integer")
+
+        binaryTree.add(builder!!.parseValue("21213123")!!)
+        binaryTree.add(builder.parseValue("10")!!)
+        binaryTree.add(builder.parseValue("7")!!)
+        binaryTree.add(builder.parseValue("512312312")!!)
+        binaryTree.add(builder.parseValue("512312312")!!)
+        binaryTree.add(builder.parseValue("512312312")!!)
+        binaryTree.add(builder.parseValue("3")!!)
+        binaryTree.add(builder.parseValue("2")!!)
+        binaryTree.add(builder.parseValue("1123123123")!!)
+
+        val treeFromRootUnbalanced = buildList {
+            binaryTree.forEachFromRoot(object : ElementProcessor<UserType> {
+                override fun toDo(v: UserType) {
+                    add(v.toString().toInt())
+                }
+            })
+        }
+
+        assertEquals(listOf(21213123, 10, 7, 3, 2, 512312312, 1123123123), treeFromRootUnbalanced)
+
+        binaryTree.balance()
+
+        val treeFromRootBalanced = buildList {
+            binaryTree.forEachFromRoot(object : ElementProcessor<UserType> {
+                override fun toDo(v: UserType) {
+                    add(v.toString().toInt())
+                }
+            })
+        }
+
+        assertEquals(listOf(10, 3, 2, 7, 512312312, 21213123, 1123123123), treeFromRootUnbalanced)
     }
 }

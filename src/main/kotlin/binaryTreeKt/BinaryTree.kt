@@ -20,7 +20,7 @@ interface BinaryTree {
 
     fun clear()
 
-    abstract class Abstract(private var root: Node? = null, private var _size: Int = 0, private var comparator: Comparator<Any>? = null) :
+    abstract class Abstract(protected var root: Node? = null, private var _size: Int = 0, private var comparator: Comparator<Any>? = null) :
         BinaryTree {
         inner class Node(val item: UserType? = null, var left: Node? = null, var right: Node? = null, var weight: Int = 0) {
             init {

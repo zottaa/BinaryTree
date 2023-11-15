@@ -62,7 +62,7 @@ public interface BinaryTree {
             }
         }
 
-        private Node root;
+        protected Node root;
         private int size;
 
         private Comparator<Object> comparator;
